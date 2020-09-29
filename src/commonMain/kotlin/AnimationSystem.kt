@@ -9,8 +9,8 @@ class AnimationSystem(world: World) : IteratingEntitySystem(world, AnimationComp
     private val animMapper = world.componentMapperFor<AnimationComponent>()
     private val viewMapper = world.componentMapperFor<ViewComponent>()
 
-    override fun processEntity(dt: TimeSpan, idx: Int) {
-        val anim = animMapper[idx]!!
+    override fun processEntity(dt: TimeSpan, entity: Int) {
+        val anim = animMapper[entity]
         var timeRemaining = dt.milliseconds
         var animationJustStarted = anim.idx == 0 && anim.animations[0].elapsed == 0.0
         var animationFinished = false
@@ -26,7 +26,7 @@ class AnimationSystem(world: World) : IteratingEntitySystem(world, AnimationComp
                         anim.idx = 0
                     } else {
                         animationFinished = true
-                        animMapper.removeComponent(idx)
+                        animMapper.removeComponent(entity)
                     }
                 } else {
                     anim.idx++
@@ -40,7 +40,7 @@ class AnimationSystem(world: World) : IteratingEntitySystem(world, AnimationComp
         anim.animations[anim.idx].apply {
             when (this) {
                 is RotationAnimation -> {
-                    val view = viewMapper[idx]!!.view
+                    val view = viewMapper[entity].view
                     if (animationJustStarted) {
                         initial = view.rotation
                     }
