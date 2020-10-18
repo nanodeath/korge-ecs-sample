@@ -2,6 +2,7 @@ import com.soywiz.klock.TimeSpan
 import com.soywiz.korma.geom.minus
 import com.soywiz.korma.geom.plus
 import com.soywiz.korma.geom.times
+import org.korge.ecs.Entity
 import org.korge.ecs.IteratingEntitySystem
 import org.korge.ecs.World
 
@@ -9,7 +10,7 @@ class AnimationSystem(world: World) : IteratingEntitySystem(world, AnimationComp
     private val animMapper = world.componentMapperFor<AnimationComponent>()
     private val viewMapper = world.componentMapperFor<ViewComponent>()
 
-    override fun processEntity(dt: TimeSpan, entity: Int) {
+    override fun processEntity(dt: TimeSpan, entity: Entity) {
         val anim = animMapper[entity]
         var timeRemaining = dt.milliseconds
         var animationJustStarted = anim.idx == 0 && anim.animations[0].elapsed == 0.0
